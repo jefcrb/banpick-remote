@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <title>Update Parameters</title>
+    <script>
+        const survivors = ["", "Acrobat", "Aeroplanist", "Antiquarian", "Barmaid", "Batter", "Cheerleader", "Composer", 
+            "Coordinator", "Cowboy", "Doctor", "Embalmer", "Enchantress", "Entomologist", "Explorer", 
+            "Faro Lady", "Female Dancer", "Fire Investigator", "First Officer", "Forward", "Gardener", 
+            "Gravekeeper", "Journalist", "Knight", "Lawyer", "Little Girl", "Lucky Guy", "Magician", 
+            "Mechanic", "Mercenary", "Novelist", "Painter", "Patient", "Perfumer", "Puppeteer", 
+            "Thief", "Postman", "Priestess", "Prisoner", "Professor", "Prospector", "Psychologist", 
+            "Seer", "The Minds Eye", "Toy Merchant", "Weeping Clown", "Wildling"];
+
+        const hunters = ["", "Axe Boy", "Bloody Queen", "Clerk", "Disciple", "Dream Witch", "Evil Reptilian", 
+            "Fools Gold", "Gamekeeper", "Geisha", "Goatman", "Guard 26", "Hell Ember", "Hermit", 
+            "Mad Eyes", "Naiad", "Nightmare", "Opera Singer", "Photographer", "Sculptor", 
+            "Smiley Face", "Soul Weaver", "The Breaking Wheel", "The Feaster", "The Ripper", 
+            "The Shadow", "Undead", "Violinist", "Wax Artist", "Wu Chang", "Night Watch"];
+
+        const traits = ["", "Abnormal", "Blink", "Peepers", "Teleport", "Warp", "Listen", "Patroller", "Excitement"];
+
+        const maps = ["", "Arms Factory", "Eversleeping Town", "Lakeside Village", "Leos Memory", "The Red Church", "China Town", "Moonlit River Park", "Sacred Heart Hospital"]
+
+        const fieldMap = {
+            MapPick: ["map_pick"],
+            MapBan: ["map_ban"],
+            SurPick1CharacterName: ["sur_picks", 0, "CharacterName"],
+            SurPick2CharacterName: ["sur_picks", 1, "CharacterName"],
+            SurPick3CharacterName: ["sur_picks", 2, "CharacterName"],
+            SurPick4CharacterName: ["sur_picks", 3, "CharacterName"],
+            HunPick: ["hun_pick"],
+            SurBan1: ["sur_ban", 0],
+            SurBan2: ["sur_ban", 1],
+            SurBan3: ["sur_ban", 2],
+            SurBan4: ["sur_ban", 3],
+            HunBan1: ["hun_ban", 0],
+            HunBan2: ["hun_ban", 1],
+            HunBan3: ["hun_ban", 2],
+            HunBanLock1: ["hun_ban_lock", 0],
+            HunBanLock2: ["hun_ban_lock", 1],
+            HunBanLock3: ["hun_ban_lock", 2],
+            SurHoleBan1: ["sur_hole_ban", 0],
+            SurHoleBan2: ["sur_hole_ban", 1],
+            SurHoleBan3: ["sur_hole_ban", 2],
+            SurHoleBan4: ["sur_hole_ban", 3],
+            SurHoleBan5: ["sur_hole_ban", 4],
+            SurHoleBan6: ["sur_hole_ban", 5],
+            SurHoleBan7: ["sur_hole_ban", 6],
+            SurHoleBan8: ["sur_hole_ban", 7],
+            SurHoleBan9: ["sur_hole_ban", 8],
+            SurHoleBanLock1: ["sur_hole_ban_lock", 0],
+            SurHoleBanLock2: ["sur_hole_ban_lock", 1],
+            SurHoleBanLock3: ["sur_hole_ban_lock", 2],
+            SurHoleBanLock4: ["sur_hole_ban_lock", 3],
+            SurHoleBanLock5: ["sur_hole_ban_lock", 4],
+            SurHoleBanLock6: ["sur_hole_ban_lock", 5],
+            SurHoleBanLock7: ["sur_hole_ban_lock", 6],
+            SurHoleBanLock8: ["sur_hole_ban_lock", 7],
+            SurHoleBanLock9: ["sur_hole_ban_lock", 8],
+            SurPick1TalentBorrowedTime: ["sur_picks", 0, "Talent", "BorrowedTime"],
+            SurPick1TalentKneeJerkReflex: ["sur_picks", 0, "Talent", "KneeJerkReflex"],
+            SurPick1TalentTideTurner: ["sur_picks", 0, "Talent", "TideTurner"],
+            SurPick1TalentFlywheelEffect: ["sur_picks", 0, "Talent", "FlywheelEffect"],
+            SurPick2TalentBorrowedTime: ["sur_picks", 1, "Talent", "BorrowedTime"],
+            SurPick2TalentKneeJerkReflex: ["sur_picks", 1, "Talent", "KneeJerkReflex"],
+            SurPick2TalentTideTurner: ["sur_picks", 1, "Talent", "TideTurner"],
+            SurPick2TalentFlywheelEffect: ["sur_picks", 1, "Talent", "FlywheelEffect"],
+            SurPick3TalentBorrowedTime: ["sur_picks", 2, "Talent", "BorrowedTime"],
+            SurPick3TalentKneeJerkReflex: ["sur_picks", 2, "Talent", "KneeJerkReflex"],
+            SurPick3TalentTideTurner: ["sur_picks", 2, "Talent", "TideTurner"],
+            SurPick3TalentFlywheelEffect: ["sur_picks", 2, "Talent", "FlywheelEffect"],
+            SurPick4TalentBorrowedTime: ["sur_picks", 3, "Talent", "BorrowedTime"],
+            SurPick4TalentKneeJerkReflex: ["sur_picks", 3, "Talent", "KneeJerkReflex"],
+            SurPick4TalentTideTurner: ["sur_picks", 3, "Talent", "TideTurner"],
+            SurPick4TalentFlywheelEffect: ["sur_picks", 3, "Talent", "FlywheelEffect"],
+            HunTalentConfinedSpace: ["hun_talents", "ConfinedSpace"],
+            HunTalentTrumpCard: ["hun_talents", "TrumpCard"],
+            HunTalentInsolence: ["hun_talents", "Insolence"],
+            HunTalentDetention: ["hun_talents", "Detention"],
+            TraitState: ["trait_state"],
+            Trait: ["trait"],
+            Team1Name: ["team_info", "main_team_info", "Name"],
+            Team1State: ["team_info", "main_team_info", "State"],
+            Team1ScoreW: ["team_info", "main_team_info", "Score", "W"],
+            Team1ScoreD: ["team_info", "main_team_info", "Score", "D"],
+            Team1ScoreL: ["team_info", "main_team_info", "Score", "L"],
+            Team1ScoreS: ["team_info", "main_team_info", "Score", "S"],
+            Team1ScoreFrontView: ["team_info", "main_team_info", "Score", "FrontView"],
+            Team2Name: ["team_info", "away_team_info", "Name"],
+            Team2State: ["team_info", "away_team_info", "State"],
+            Team2ScoreW: ["team_info", "away_team_info", "Score", "W"],
+            Team2ScoreD: ["team_info", "away_team_info", "Score", "D"],
+            Team2ScoreL: ["team_info", "away_team_info", "Score", "L"],
+            Team2ScoreS: ["team_info", "away_team_info", "Score", "S"],
+            Team2ScoreFrontView: ["team_info", "away_team_info", "Score", "FrontView"],
+            Team1Player1Name: ["team_info", "main_team_player", 0, "Name"],
+            Team1Player1State: ["team_info", "main_team_player", 0, "State"],
+            Team1Player1OnField: ["team_info", "main_team_player", 0, "IsPlayerTakeTheField"],
+            Team1Player2Name: ["team_info", "main_team_player", 1, "Name"],
+            Team1Player2State: ["team_info", "main_team_player", 1, "State"],
+            Team1Player2OnField: ["team_info", "main_team_player", 1, "IsPlayerTakeTheField"],
+            Team1Player3Name: ["team_info", "main_team_player", 2, "Name"],
+            Team1Player3State: ["team_info", "main_team_player", 2, "State"],
+            Team1Player3OnField: ["team_info", "main_team_player", 2, "IsPlayerTakeTheField"],
+            Team1Player4Name: ["team_info", "main_team_player", 3, "Name"],
+            Team1Player4State: ["team_info", "main_team_player", 3, "State"],
+            Team1Player4OnField: ["team_info", "main_team_player", 3, "IsPlayerTakeTheField"],
+            Team1Player5Name: ["team_info", "main_team_player", 4, "Name"],
+            Team1Player5State: ["team_info", "main_team_player", 4, "State"],
+            Team1Player5OnField: ["team_info", "main_team_player", 4, "IsPlayerTakeTheField"],
+            Team1Player6Name: ["team_info", "main_team_player", 5, "Name"],
+            Team1Player6State: ["team_info", "main_team_player", 5, "State"],
+            Team1Player6OnField: ["team_info", "main_team_player", 5, "IsPlayerTakeTheField"],
+            Team1Player7Name: ["team_info", "main_team_player", 6, "Name"],
+            Team1Player7State: ["team_info", "main_team_player", 6, "State"],
+            Team1Player7OnField: ["team_info", "main_team_player", 6, "IsPlayerTakeTheField"],
+            Team1Player8Name: ["team_info", "main_team_player", 7, "Name"],
+            Team1Player8State: ["team_info", "main_team_player", 7, "State"],
+            Team1Player8OnField: ["team_info", "main_team_player", 7, "IsPlayerTakeTheField"],
+            Team1Player9Name: ["team_info", "main_team_player", 8, "Name"],
+            Team1Player9State: ["team_info", "main_team_player", 8, "State"],
+            Team1Player9OnField: ["team_info", "main_team_player", 8, "IsPlayerTakeTheField"],
+            Team2Player1Name: ["team_info", "away_team_player", 0, "Name"],
+            Team2Player1State: ["team_info", "away_team_player", 0, "State"],
+            Team2Player1OnField: ["team_info", "away_team_player", 0, "IsPlayerTakeTheField"],
+            Team2Player2Name: ["team_info", "away_team_player", 1, "Name"],
+            Team2Player2State: ["team_info", "away_team_player", 1, "State"],
+            Team2Player2OnField: ["team_info", "away_team_player", 1, "IsPlayerTakeTheField"],
+            Team2Player3Name: ["team_info", "away_team_player", 2, "Name"],
+            Team2Player3State: ["team_info", "away_team_player", 2, "State"],
+            Team2Player3OnField: ["team_info", "away_team_player", 2, "IsPlayerTakeTheField"],
+            Team2Player4Name: ["team_info", "away_team_player", 3, "Name"],
+            Team2Player4State: ["team_info", "away_team_player", 3, "State"],
+            Team2Player4OnField: ["team_info", "away_team_player", 3, "IsPlayerTakeTheField"],
+            Team2Player5Name: ["team_info", "away_team_player", 4, "Name"],
+            Team2Player5State: ["team_info", "away_team_player", 4, "State"],
+            Team2Player5OnField: ["team_info", "away_team_player", 4, "IsPlayerTakeTheField"],
+            Team2Player6Name: ["team_info", "away_team_player", 5, "Name"],
+            Team2Player6State: ["team_info", "away_team_player", 5, "State"],
+            Team2Player6OnField: ["team_info", "away_team_player", 5, "IsPlayerTakeTheField"],
+            Team2Player7Name: ["team_info", "away_team_player", 6, "Name"],
+            Team2Player7State: ["team_info", "away_team_player", 6, "State"],
+            Team2Player7OnField: ["team_info", "away_team_player", 6, "IsPlayerTakeTheField"],
+            Team2Player8Name: ["team_info", "away_team_player", 7, "Name"],
+            Team2Player8State: ["team_info", "away_team_player", 7, "State"],
+            Team2Player8OnField: ["team_info", "away_team_player", 7, "IsPlayerTakeTheField"],
+            Team2Player9Name: ["team_info", "away_team_player", 8, "Name"],
+            Team2Player9State: ["team_info", "away_team_player", 8, "State"],
+            Team2Player9OnField: ["team_info", "away_team_player", 8, "IsPlayerTakeTheField"],
+        };
+
+        const resetTeams = [
+            { path: ["team_info", "main_team_info", "Name"], value: "" },
+            { path: ["team_info", "main_team_info", "State"], value: "" },
+            { path: ["team_info", "main_team_info", "Score", "W"], value: "0" },
+            { path: ["team_info", "main_team_info", "Score", "D"], value: "0" },
+            { path: ["team_info", "main_team_info", "Score", "L"], value: "0" },
+            { path: ["team_info", "main_team_info", "Score", "S"], value: "0" },
+            { path: ["team_info", "main_team_info", "Score", "FrontView"], value: "0   0   0" },
+            { path: ["team_info", "away_team_info", "Name"], value: "" },
+            { path: ["team_info", "away_team_info", "State"], value: "" },
+            { path: ["team_info", "away_team_info", "Score", "W"], value: "0" },
+            { path: ["team_info", "away_team_info", "Score", "D"], value: "0" },
+            { path: ["team_info", "away_team_info", "Score", "L"], value: "0" },
+            { path: ["team_info", "away_team_info", "Score", "S"], value: "0" },
+            { path: ["team_info", "away_team_info", "Score", "FrontView"], value: "0   0   0" },
+            { path: ["team_info", "main_team_player", 0, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 0, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 0, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 1, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 1, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 1, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 2, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 2, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 2, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 3, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 3, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 3, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 4, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 4, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 4, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 5, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 5, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 5, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 6, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 6, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 6, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 7, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 7, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 7, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "main_team_player", 8, "Name"], value: "" },
+            { path: ["team_info", "main_team_player", 8, "State"], value: "" },
+            { path: ["team_info", "main_team_player", 8, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 0, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 0, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 0, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 1, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 1, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 1, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 2, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 2, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 2, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 3, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 3, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 3, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 4, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 4, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 4, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 5, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 5, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 5, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 6, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 6, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 6, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 7, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 7, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 7, "IsPlayerTakeTheField"], value: false },
+            { path: ["team_info", "away_team_player", 8, "Name"], value: "" },
+            { path: ["team_info", "away_team_player", 8, "State"], value: "" },
+            { path: ["team_info", "away_team_player", 8, "IsPlayerTakeTheField"], value: false }
+        ];
+
+
+        const resetPicks = [
+            { path: ["map_pick"], value: "" },
+            { path: ["map_ban"], value: "" },
+            { path: ["sur_picks", 0, "CharacterName"], value: "" },
+            { path: ["sur_picks", 1, "CharacterName"], value: "" },
+            { path: ["sur_picks", 2, "CharacterName"], value: "" },
+            { path: ["sur_picks", 3, "CharacterName"], value: "" },
+            { path: ["hun_pick"], value: "" },
+            { path: ["sur_ban", 0], value: "" },
+            { path: ["sur_ban", 1], value: "" },
+            { path: ["sur_ban", 2], value: "" },
+            { path: ["sur_ban", 3], value: "" },
+            { path: ["hun_ban", 0], value: "" },
+            { path: ["hun_ban", 1], value: "" },
+            { path: ["hun_ban", 2], value: "" },
+            { path: ["hun_ban_lock", 0], value: false },
+            { path: ["hun_ban_lock", 1], value: false},
+            { path: ["hun_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban", 0], value: "" },
+            { path: ["sur_hole_ban", 1], value: "" },
+            { path: ["sur_hole_ban", 2], value: "" },
+            { path: ["sur_hole_ban", 3], value: "" },
+            { path: ["sur_hole_ban", 4], value: "" },
+            { path: ["sur_hole_ban", 5], value: "" },
+            { path: ["sur_hole_ban", 6], value: "" },
+            { path: ["sur_hole_ban", 7], value: "" },
+            { path: ["sur_hole_ban", 8], value: "" },
+            { path: ["sur_hole_ban_lock", 0], value: false },
+            { path: ["sur_hole_ban_lock", 1], value: false },
+            { path: ["sur_hole_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban_lock", 3], value: false },
+            { path: ["sur_hole_ban_lock", 4], value: false },
+            { path: ["sur_hole_ban_lock", 5], value: false },
+            { path: ["sur_hole_ban_lock", 6], value: false },
+            { path: ["sur_hole_ban_lock", 7], value: false },
+            { path: ["sur_hole_ban_lock", 8], value: false },
+            { path: ["sur_picks", 0, "Talent", "BorrowedTime"], value: false },
+            { path: ["sur_picks", 0, "Talent", "KneeJerkReflex"], value: false },
+            { path: ["sur_picks", 0, "Talent", "TideTurner"], value: false },
+            { path: ["sur_picks", 0, "Talent", "FlywheelEffect"], value: false },
+            { path: ["sur_picks", 1, "Talent", "BorrowedTime"], value: false },
+            { path: ["sur_picks", 1, "Talent", "KneeJerkReflex"], value: false },
+            { path: ["sur_picks", 1, "Talent", "TideTurner"], value: false },
+            { path: ["sur_picks", 1, "Talent", "FlywheelEffect"], value: false },
+            { path: ["sur_picks", 2, "Talent", "BorrowedTime"], value: false },
+            { path: ["sur_picks", 2, "Talent", "KneeJerkReflex"], value: false },
+            { path: ["sur_picks", 2, "Talent", "TideTurner"], value: false },
+            { path: ["sur_picks", 2, "Talent", "FlywheelEffect"], value: false },
+            { path: ["sur_picks", 3, "Talent", "BorrowedTime"], value: false },
+            { path: ["sur_picks", 3, "Talent", "KneeJerkReflex"], value: false },
+            { path: ["sur_picks", 3, "Talent", "TideTurner"], value: false },
+            { path: ["sur_picks", 3, "Talent", "FlywheelEffect"], value: false },
+            { path: ["trait_state"], value: false },
+            { path: ["trait"], value: "" },
+            { path: ["hun_talents", "ConfinedSpace"], value: false },
+            { path: ["hun_talents", "TrumpCard"], value: false },
+            { path: ["hun_talents", "Insolence"], value: false },
+            { path: ["hun_talents", "Detention"], value: false },
+        ];
+
+        const presetR1 = [
+            { path: ["hun_ban_lock", 0], value: false },
+            { path: ["hun_ban_lock", 1], value: false },
+            { path: ["hun_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban_lock", 0], value: false },
+            { path: ["sur_hole_ban_lock", 1], value: false },
+            { path: ["sur_hole_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban_lock", 3], value: false },
+            { path: ["sur_hole_ban_lock", 4], value: false },
+            { path: ["sur_hole_ban_lock", 5], value: false },
+            { path: ["sur_hole_ban_lock", 6], value: false },
+            { path: ["sur_hole_ban_lock", 7], value: false },
+            { path: ["sur_hole_ban_lock", 8], value: false },
+        ]
+
+        const presetR2 = [
+            { path: ["hun_ban_lock", 0], value: true },
+            { path: ["hun_ban_lock", 1], value: false },
+            { path: ["hun_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban_lock", 0], value: true },
+            { path: ["sur_hole_ban_lock", 1], value: true },
+            { path: ["sur_hole_ban_lock", 2], value: true },
+            { path: ["sur_hole_ban_lock", 3], value: false },
+            { path: ["sur_hole_ban_lock", 4], value: false },
+            { path: ["sur_hole_ban_lock", 5], value: false },
+            { path: ["sur_hole_ban_lock", 6], value: false },
+            { path: ["sur_hole_ban_lock", 7], value: false },
+            { path: ["sur_hole_ban_lock", 8], value: false },
+        ]
+
+        const presetR3 = [
+            { path: ["hun_ban_lock", 0], value: true },
+            { path: ["hun_ban_lock", 1], value: true },
+            { path: ["hun_ban_lock", 2], value: false },
+            { path: ["sur_hole_ban_lock", 0], value: true },
+            { path: ["sur_hole_ban_lock", 1], value: true },
+            { path: ["sur_hole_ban_lock", 2], value: true },
+            { path: ["sur_hole_ban_lock", 3], value: true },
+            { path: ["sur_hole_ban_lock", 4], value: true },
+            { path: ["sur_hole_ban_lock", 5], value: true },
+            { path: ["sur_hole_ban_lock", 6], value: false },
+            { path: ["sur_hole_ban_lock", 7], value: false },
+            { path: ["sur_hole_ban_lock", 8], value: false },
+        ]
+
+        const presetR4 = [
+            { path: ["hun_ban_lock", 0], value: true },
+            { path: ["hun_ban_lock", 1], value: true },
+            { path: ["hun_ban_lock", 2], value: true },
+            { path: ["sur_hole_ban_lock", 0], value: true },
+            { path: ["sur_hole_ban_lock", 1], value: true },
+            { path: ["sur_hole_ban_lock", 2], value: true },
+            { path: ["sur_hole_ban_lock", 3], value: true },
+            { path: ["sur_hole_ban_lock", 4], value: true },
+            { path: ["sur_hole_ban_lock", 5], value: true },
+            { path: ["sur_hole_ban_lock", 6], value: true },
+            { path: ["sur_hole_ban_lock", 7], value: true },
+            { path: ["sur_hole_ban_lock", 8], value: true },
+        ]
+
+        const swap1 = [
+            { path: ["team_info", "main_team_info", "State"], value: "Surviving" },
+            { path: ["team_info", "away_team_info", "State"], value: "Hunting" }
+        ]
+
+        const swap2 = [
+            { path: ["team_info", "main_team_info", "State"], value: "Hunting" },
+            { path: ["team_info", "away_team_info", "State"], value: "Surviving" }
+        ]
+
+
+
+
+        async function updateApi(fieldId, value) {
+            const path = fieldMap[fieldId];
+            if (!path) {
+                console.error(`Field ID ${fieldId} not mapped`);
+                return;
+            }
+
+            console.log(fieldId, value)
+
+            const data = { path, value };
+            const input = window.location.pathname.split('/')[1];
+            const apiUrl = `/api/${input}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+                console.log(result.message);
+            } catch (error) {
+                console.error('Error updating API:', error);
+            }
+        }
+
+        function handleSelectionChange(event, frontView = "", nr = undefined) {
+            const { id, value } = event.target;
+            updateApi(id, value);
+
+            if (frontView !== "") {
+                if (nr === 1)
+                    updateApi("Team1ScoreFrontView", frontView)
+                if (nr === 2)
+                    updateApi("Team2ScoreFrontView", frontView)
+            }
+        }
+
+        function handleCheckboxChange(event) {
+            const { id, checked } = event.target;
+            updateApi(id, checked);
+        }
+
+        async function fetchInitialData() {
+            const input = window.location.pathname.split('/')[1];
+            const apiUrl = `/api/${input}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                console.log(data)
+
+                Object.entries(fieldMap).forEach(([fieldId, path]) => {
+                    console.log(path)
+                    const value = getValueFromPath(data, path);
+                    console.log(value)
+
+                    const element = document.getElementById(fieldId);
+                    if (element) {
+                        if (element.tagName === 'SELECT' || element.tagName === 'INPUT' && element.type === 'text' || element.tagName === 'INPUT' && element.type === 'number') {
+                            element.value = value || '';
+                        } else if (element.type === 'checkbox') {
+                            element.checked = Boolean(value);
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching initial data:', error);
+            }
+        }
+
+        function getValueFromPath(data, path) {
+            return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), data["data"]);
+        }
+
+        function setFrontView(event, teamnr) {
+            var w = document.getElementById(`Team${teamnr}ScoreW`).value
+            var d = document.getElementById(`Team${teamnr}ScoreD`).value
+            var l = document.getElementById(`Team${teamnr}ScoreL`).value
+            var frontView = `${w}   ${d}   ${l}`
+
+            handleSelectionChange(event, frontView, teamnr)
+        }
+
+    function swapFactions() {
+        if (document.querySelector('#Team1State').value === "Surviving") {
+            applyPreset(swap2)
+        }
+        else {
+            applyPreset(swap1)
+        }
+    }
+
+    function applyPreset(preset) {
+    const updates = [];
+
+    // Apply preset values to the DOM and prepare updates for API
+    preset.forEach(({ path, value }) => {
+        // Find the corresponding field ID from the path
+        const fieldId = Object.keys(fieldMap).find(
+            id => JSON.stringify(fieldMap[id]) === JSON.stringify(path)
+        );
+
+        if (fieldId) {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                // Update the DOM element with the preset value
+                if (element.tagName === 'SELECT' || (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'number'))) {
+                    element.value = value;
+                } else if (element.type === 'checkbox') {
+                    element.checked = Boolean(value);
+                }
+
+                // Add to updates for API call
+                updates.push({ path, value });
+            }
+        } else {
+            console.warn(`No matching field ID found for path: ${JSON.stringify(path)}`);
+        }
+    });
+
+    // Send updates to the backend
+    const input = window.location.pathname.split('/')[1];
+    const apiUrl = `/api/${input}`;
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ updates }),
+    })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result.message);
+        })
+        .catch(error => {
+            console.error('Error applying preset:', error);
+        });
+}
+        document.addEventListener('DOMContentLoaded', fetchInitialData);
+    </script>
+</head>
+<body>
+    <h1>Update Parameters</h1>
+    <button onclick="applyPreset(resetPicks)" class="reset-btn">Reset picks & bans</button>
+    <button onclick="applyPreset(presetR1)">Preset R1</button>
+    <button onclick="applyPreset(presetR2)">Preset R2</button>
+    <button onclick="applyPreset(presetR3)">Preset R3</button>
+    <button onclick="applyPreset(presetR4)">Preset R4</button>
+    <h2>Map Pick</h2>
+    <div class="map_pick">
+        <label>Map pick</label>
+        <select id="MapPick" onchange="handleSelectionChange(event)">
+            <script>
+                maps.forEach(map => {
+                    document.write(`<option value="${map}">${map}</option>`);
+                });
+            </script>
+        </select>
+        <label>Map ban</label>
+        <select id="MapBan" onchange="handleSelectionChange(event)">
+            <script>
+                maps.forEach(map => {
+                    document.write(`<option value="${map}">${map}</option>`);
+                });
+            </script>
+        </select>
+    </div>
+    <h2>Sur Picks</h2>
+    <div class="sur_pick">
+        <label for="SurPick1CharacterName">Sur Pick 1:</label>
+        <select id="SurPick1CharacterName" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+        <div>
+            <input type="checkbox" id="SurPick1TalentBorrowedTime" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/BorrowedTime.png"/>
+            <input type="checkbox" id="SurPick1TalentKneeJerkReflex" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/KneeJerkReflex.png"/>
+            <input type="checkbox" id="SurPick1TalentTideTurner" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/TideTurner.png"/>
+            <input type="checkbox" id="SurPick1TalentFlywheelEffect" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/FlywheelEffect.png"/>
+        </div>
+    </div>
+    <div class="sur_pick">
+        <label for="SurPick2CharacterName">Sur Pick 2:</label>
+        <select id="SurPick2CharacterName" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+        <div>
+            <input type="checkbox" id="SurPick2TalentBorrowedTime" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/BorrowedTime.png"/>
+            <input type="checkbox" id="SurPick2TalentKneeJerkReflex" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/KneeJerkReflex.png"/>
+            <input type="checkbox" id="SurPick2TalentTideTurner" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/TideTurner.png"/>
+            <input type="checkbox" id="SurPick2TalentFlywheelEffect" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/FlywheelEffect.png"/>
+        </div>
+    </div>
+    <div class="sur_pick">
+        <label for="SurPick3CharacterName">Sur Pick 3:</label>
+        <select id="SurPick3CharacterName" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+        <div>
+            <input type="checkbox" id="SurPick3TalentBorrowedTime" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/BorrowedTime.png"/>
+            <input type="checkbox" id="SurPick3TalentKneeJerkReflex" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/KneeJerkReflex.png"/>
+            <input type="checkbox" id="SurPick3TalentTideTurner" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/TideTurner.png"/>
+            <input type="checkbox" id="SurPick3TalentFlywheelEffect" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/FlywheelEffect.png"/>
+        </div>
+    </div>
+    <div class="sur_pick">
+        <label for="SurPick4CharacterName">Sur Pick 4:</label>
+        <select id="SurPick4CharacterName" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+        <div>
+            <input type="checkbox" id="SurPick4TalentBorrowedTime" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/BorrowedTime.png"/>
+            <input type="checkbox" id="SurPick4TalentKneeJerkReflex" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/KneeJerkReflex.png"/>
+            <input type="checkbox" id="SurPick4TalentTideTurner" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/TideTurner.png"/>
+            <input type="checkbox" id="SurPick4TalentFlywheelEffect" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/FlywheelEffect.png"/>
+        </div>
+    </div>
+
+    <h2>Hunter Pick</h2>
+    <div class="hun_pick">
+        <label for="HunPick">Hunter Pick:</label>
+        <select id="HunPick" onchange="handleSelectionChange(event)">
+            <script>
+                hunters.forEach(hun => {
+                    document.write(`<option value="${hun}">${hun}</option>`);
+                });
+            </script>
+        </select>
+        <div>
+            <input type="checkbox" id="HunTalentConfinedSpace" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/ConfinedSpace.png"/>
+            <input type="checkbox" id="HunTalentDetention" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/Detention.png"/>
+            <input type="checkbox" id="HunTalentInsolence" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/Insolence.png"/>
+            <input type="checkbox" id="HunTalentTrumpCard" onchange="handleCheckboxChange(event)">
+            <img src="../static/Talents/TrumpCard.png"/>
+        </div>
+        <div>
+            <label for="Trait">Trait</label>
+            <select id="Trait" onchange="handleSelectionChange(event)">
+                <script>
+                    traits.forEach(trait => {
+                        document.write(`<option value="${trait}">${trait}</option>`);
+                    })
+                </script>
+            </select>
+            <label><input type="checkbox" id="TraitState" onchange="handleCheckboxChange(event)"> Show Trait</input></label>
+        </div>
+    </div>
+
+    <h2>Global Bans</h2>
+    <div class="global_ban">
+        <label for="SurHoleBan1">Global ban 1:</label>
+        <select id="SurHoleBan1" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock1" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan2">Global ban 2:</label>
+        <select id="SurHoleBan2" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock2" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan3">Global ban 3:</label>
+        <select id="SurHoleBan3" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock3" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan4">Global ban 4:</label>
+        <select id="SurHoleBan4" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock4" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan5">Global ban 5:</label>
+        <select id="SurHoleBan5" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock5" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan6">Global ban 6:</label>
+        <select id="SurHoleBan6" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock6" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan7">Global ban 7:</label>
+        <select id="SurHoleBan7" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock7" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan8">Global ban 8:</label>
+        <select id="SurHoleBan8" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock8" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="global_ban">
+        <label for="SurHoleBan9">Global ban 9:</label>
+        <select id="SurHoleBan9" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                        document.write(`<option value="${sur}">${sur}</option>`);
+                    })
+            </script>
+        </select>
+        <label><input type="checkbox" id="SurHoleBanLock9" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+
+    <h2>Survivor Bans</h2>
+    <div class="sur_ban">
+        <label for="SurBan1">Sur Ban 1:</label>
+        <select id="SurBan1" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+    </div>
+    <div class="sur_ban">
+        <label for="SurBan2">Sur Ban 2:</label>
+        <select id="SurBan2" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+    </div>
+    <div class="sur_ban">
+        <label for="SurBan3">Sur Ban 3:</label>
+        <select id="SurBan3" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+    </div>
+    <div class="sur_ban">
+        <label for="SurBan4">Sur Ban 4:</label>
+        <select id="SurBan4" onchange="handleSelectionChange(event)">
+            <script>
+                survivors.forEach(sur => {
+                    document.write(`<option value="${sur}">${sur}</option>`);
+                });
+            </script>
+        </select>
+    </div>
+
+    <h2>Hunter Ban</h2>
+    <div class="hun_ban">
+        <label for="HunBan1">Hun Ban 1:</label>
+        <select id="HunBan1" onchange="handleSelectionChange(event)">
+            <script>
+                hunters.forEach(hun => {
+                    document.write(`<option value="${hun}">${hun}</option>`);
+                });
+            </script>
+        </select>
+        <label><input type="checkbox" id="HunBanLock1" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="hun_ban">
+        <label for="HunBan2">Hun Ban 2:</label>
+        <select id="HunBan2" onchange="handleSelectionChange(event)">
+            <script>
+                hunters.forEach(hun => {
+                    document.write(`<option value="${hun}">${hun}</option>`);
+                });
+            </script>
+        </select>
+        <label><input type="checkbox" id="HunBanLock2" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <div class="hun_ban">
+        <label for="HunBan3">Hun Ban 3:</label>
+        <select id="HunBan3" onchange="handleSelectionChange(event)">
+            <script>
+                hunters.forEach(hun => {
+                    document.write(`<option value="${hun}">${hun}</option>`);
+                });
+            </script>
+        </select>
+        <label><input type="checkbox" id="HunBanLock3" onchange="handleCheckboxChange(event)"> Enabled</input></label>
+    </div>
+    <button onclick="swapFactions()">Swap Factions</button>
+    <div class="teams">
+        <h2>Teams</h2>
+        <div class="team1">
+            <label>Team 1</label>
+            <label><input type="text" id="Team1Name" onchange="handleSelectionChange(event)"> Team acronym</input></label>
+            <label>State</label>
+            <select id="Team1State" onchange="handleSelectionChange(event)">
+                <option>Surviving</option>
+                <option>Hunting</option>
+            </select>
+            <label><input type="number" id="Team1ScoreW" onchange="handleSelectionChange(event)"></input>Wins</label>
+            <label><input type="number" id="Team1ScoreD" onchange="handleSelectionChange(event)"></input>Draws</label>
+            <label><input type="number" id="Team1ScoreL" onchange="handleSelectionChange(event)"></input>Losses</label>
+            <label><input type="number" id="Team1ScoreS" onchange="handleSelectionChange(event)"></input>Score</label>
+            <div class="players">
+                <div class="survivors">
+                    <div class="player">
+                        <input type="text"     id="Team1Player1Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player1OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player2Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player2OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player3Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player3OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player4Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player4OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player5Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player5OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player6Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player6OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                </div>
+                <div class="hunters">
+                    <div class="player">
+                        <input type="text"     id="Team1Player7Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player7OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player8Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player8OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team1Player9Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team1Player9OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team2">
+            <label>Team 2</label>
+            <label><input type="text" id="Team2Name" onchange="handleSelectionChange(event)"> Team acronym</input></label>
+            <label>State</label>
+            <select id="Team2State" onchange="handleSelectionChange(event)">
+                <option>Hunting</option>
+                <option>Surviving</option>
+            </select>
+        </select>
+            <label><input type="number" id="Team2ScoreW" onchange="handleSelectionChange(event)"></input>Wins</label>
+            <label><input type="number" id="Team2ScoreD" onchange="handleSelectionChange(event)"></input>Draws</label>
+            <label><input type="number" id="Team2ScoreL" onchange="handleSelectionChange(event)"></input>Losses</label>
+            <label><input type="number" id="Team2ScoreS" onchange="handleSelectionChange(event)"></input>Score</label>
+            <div class="players">
+                <div class="survivors">
+                    <div class="player">
+                        <input type="text"     id="Team2Player1Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player1OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player2Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player2OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player3Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player3OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player4Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player4OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player5Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player5OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player6Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player6OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                </div>
+                <div class="hunters">
+                    <div class="player">
+                        <input type="text"     id="Team2Player7Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player7OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player8Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player8OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                    <div class="player">
+                        <input type="text"     id="Team2Player9Name" onchange="handleSelectionChange(event)" />
+                        <input type="checkbox" id="Team2Player9OnField" onchange="handleCheckboxChange(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button onclick="applyPreset(resetTeams)" class="reset-btn">Reset Teams</button>
+</body>
+</html>

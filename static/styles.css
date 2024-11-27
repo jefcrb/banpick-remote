@@ -1,0 +1,178 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #201A23;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #4a90e2;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+h2 {
+    margin: 40px 0 20px;
+}
+
+/* Buttons */
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.reset-btn {
+    background-color: red;
+}
+
+button:hover {
+    background-color: #357ab8;
+}
+
+/* Containers */
+div.map_pick,
+div.sur_pick,
+div.hun_pick,
+div.sur_ban,
+div.hun_ban,
+div.global_ban,
+div.teams,
+div.team1,
+div.team2 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #2E2532;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+.teams {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+div.team1, div.team2 {
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+}
+
+/* Inputs and Labels */
+label {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #aa8cb8;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    margin: 5px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+input[type="checkbox"] {
+    margin: 5px;
+    transform: scale(1.2);
+}
+
+/* Horizontal Alignment */
+div.sur_pick > label,
+div.hun_pick > label,
+div.sur_ban > label,
+div.hun_ban > label,
+div.global_bans > label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+div.sur_pick,
+div.hun_pick {
+    flex-wrap: wrap;
+}
+
+div.global_bans select {
+    margin: 0 auto;
+}
+
+div.global_bans label {
+    text-align: center;
+}
+
+/* Input and Checkbox Alignment */
+.global_bans {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    justify-items: center;
+}
+
+.global_bans select,
+.global_bans input[type="checkbox"] {
+    margin-bottom: 5px;
+}
+
+/* Talents */
+div.sur_pick div,
+div.hun_pick div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+div.sur_pick div img,
+div.hun_pick div img {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+div.sur_pick div img:hover,
+div.hun_pick div img:hover {
+    transform: scale(1.1);
+}
+
+img {
+    width: 40px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 800) {
+    div.map_pick,
+    div.sur_pick,
+    div.hun_pick,
+    div.sur_ban,
+    div.hun_ban,
+    div.global_bans {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    div.team1, div.team2 {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,233 @@
+{
+    "sur_picks": [
+        {
+            "CharacterName": "",
+            "Talent": {
+                "BorrowedTime": false,
+                "KneeJerkReflex": false,
+                "TideTurner": false,
+                "FlywheelEffect": false
+            }
+        },
+        {
+            "CharacterName": "",
+            "Talent": {
+                "BorrowedTime": false,
+                "KneeJerkReflex": false,
+                "TideTurner": false,
+                "FlywheelEffect": false
+            }
+        },
+        {
+            "CharacterName": "",
+            "Talent": {
+                "BorrowedTime": false,
+                "KneeJerkReflex": false,
+                "TideTurner": false,
+                "FlywheelEffect": false
+            }
+        },
+        {
+            "CharacterName": "",
+            "Talent": {
+                "BorrowedTime": false,
+                "KneeJerkReflex": false,
+                "TideTurner": false,
+                "FlywheelEffect": false
+            }
+        }
+    ],
+    "hun_pick": "",
+    "sur_ban": [
+        "",
+        "",
+        "",
+        ""
+    ],
+    "sur_hole_ban": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "hun_ban": [
+        "",
+        "",
+        ""
+    ],
+    "sur_hole_ban_lock": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "hun_ban_lock": [
+        false,
+        false,
+        false
+    ],
+    "sur_hole_ban_main_record": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "sur_hole_ban_away_record": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "map_pick": "",
+    "map_ban": "",
+    "trait": "",
+    "trait_state": false,
+    "hun_talents": {
+        "ConfinedSpace": false,
+        "Detention": false,
+        "Insolence": false,
+        "TrumpCard": false
+    },
+    "team_info": {
+        "main_team_player": [
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            }
+        ],
+        "away_team_player": [
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Surviving",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            },
+            {
+                "Name": "",
+                "State": "Hunting",
+                "IsPlayerTakeTheField": false
+            }
+        ],
+        "main_team_info": {
+            "Name": "",
+            "State": "Surviving",
+            "LOGO": "",
+            "Score": {
+                "W": 0,
+                "D": 0,
+                "L": 0,
+                "S": 0,
+                "BackView": "W:0 D:0 L:0 Score:0",
+                "FrontView": "0   0   0"
+            }
+        },
+        "away_team_info": {
+            "Name": "",
+            "State": "Hunting",
+            "LOGO": "",
+            "Score": {
+                "W": 0,
+                "D": 0,
+                "L": 0,
+                "S": 0,
+                "BackView": "W:0 D:0 L:0 Score:0",
+                "FrontView": "0   0   0"
+            }
+        }
+    }
+}
